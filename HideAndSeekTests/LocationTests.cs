@@ -5,29 +5,29 @@ namespace HideAndSeekTests
     using HideAndSeek;
     using System.Collections.Generic;
     using System.Linq;
+
     [TestClass]
     public class LocationTests
     {
         private Location center;
+
         /// <summary>
-        /// Initializes each unit test by setting creating a new the center location
-        /// and adding a room in each direction before the test
+        /// Initializes each unit test by setting createing a new the center location and adding a room in each direction before the test
         /// </summary>
         [TestInitialize]
         public void Initialize()
         {
-            // You'll use this to create a bunch of locations before each test
             center = new Location("Center Room");
             Assert.AreSame("Center Room", center.ToString());
             Assert.AreEqual(0, center.ExitList.Count());
 
             center.AddExit(Direction.North, new Location("North Room"));
-            center.AddExit(Direction.South, new Location("South Room"));
-            center.AddExit(Direction.East, new Location("East Room"));
-            center.AddExit(Direction.West, new Location("West Room"));
             center.AddExit(Direction.Northeast, new Location("Northeast Room"));
-            center.AddExit(Direction.Southwest, new Location("Southwest Room"));
+            center.AddExit(Direction.East, new Location("East Room"));
             center.AddExit(Direction.Southeast, new Location("Southeast Room"));
+            center.AddExit(Direction.South, new Location("South Room"));
+            center.AddExit(Direction.Southwest, new Location("East Room"));
+            center.AddExit(Direction.West, new Location("West Room"));
             center.AddExit(Direction.Northwest, new Location("Northwest Room"));
             center.AddExit(Direction.Up, new Location("Upper Room"));
             center.AddExit(Direction.Down, new Location("Lower Room"));
@@ -43,7 +43,6 @@ namespace HideAndSeekTests
         [TestMethod]
         public void TestGetExit()
         {
-            // This test will make sure the GetExit method works
             var eastRoom = center.GetExit(Direction.East);
             Assert.AreEqual("East Room", eastRoom.Name);
             Assert.AreSame(center, eastRoom.GetExit(Direction.West));
@@ -56,32 +55,30 @@ namespace HideAndSeekTests
         [TestMethod]
         public void TestExitList()
         {
-            // This test will make sure the ExitList property works
             CollectionAssert.AreEqual(
-              new List<string>() {
+               new List<string>() {
                    "the North Room is to the North",
                    "the South Room is to the South",
                    "the East Room is to the East",
                    "the West Room is to the West",
                    "the Northeast Room is to the Northeast",
-                   "the Southwest Room is to the Southwest",
+                   "the East Room is to the Southwest",
                    "the Southeast Room is to the Southeast",
                    "the Northwest Room is to the Northwest",
                    "the Upper Room is Up",
                    "the Lower Room is Down",
                    "the Inside Room is In",
                    "the Outside Room is Out",
-              },
-              center.ExitList.ToList());
+               },
+               center.ExitList.ToList());
         }
 
         /// <summary>
-        /// Validates that each room’s name and return exit is created correctly
+        /// Validates that each room's name and return exit is created correctly
         /// </summary>
         [TestMethod]
         public void TestReturnExits()
         {
-            // This test will test navigating through the center Location
             var e = center.GetExit(Direction.East);
             Assert.AreEqual("East Room", e.ToString());
             Assert.AreSame(center, e.GetExit(Direction.West));
@@ -109,13 +106,11 @@ namespace HideAndSeekTests
         }
 
         /// <summary>
-        /// Add a hall to one of the rooms and make sure the hall room’s names
-        /// and return exits are created correctly
+        /// Add a hall to one of the rooms and make sure the hall room's names and return exits are created correctly
         /// </summary>
         [TestMethod]
         public void TestAddHall()
         {
-            // This test will add a hallway with two locations and make sure they work
             var e = center.GetExit(Direction.East);
             Assert.AreEqual(1, e.ExitList.Count());
             var eastHall1 = new Location("East hall 1");
